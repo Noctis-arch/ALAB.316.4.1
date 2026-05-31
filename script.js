@@ -144,3 +144,45 @@ registrationForm.addEventListener("submit", function (event) {
   registrationForm.reset();
   showMessage("Registration successful!", null, true);
 });
+
+loginForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const usernameInput = loginForm.username;
+  const passwordInput = loginForm.password;
+  const persistInput = loginForm.persist;
+
+  const username = usernameInput.value.trim().toLowerCase();
+  const password = passwordInput.value;
+
+  const users = getUsers();
+  const foundUser = users.find(user => user.username === username);
+
+  if (username === "") {
+    showMessage("The username cannot be blank.", usernameInput);
+    return;
+  }
+
+  if (!foundUser) {
+    showMessage("The username must exist.", usernameInput);
+    return;
+  }
+
+  if (password === "") {
+    showMessage("The password cannot be blank.", passwordInput);
+    return;
+  }
+
+  if (password !== foundUser.password) {
+    showMessage("The password must be correct.", passwordInput);
+    return;
+  }
+
+  loginForm.reset();
+
+  if (persistInput.checked) {
+    showMessage("Login successful! You will stay logged in.", null, true);
+  } else {
+    showMessage("Login successful!", null, true);
+  }
+});
